@@ -1,12 +1,13 @@
-var BBC = function(element, data) {
+var BBC = function( element, data ) {
 
+	//	Store local copy of data
 	this.JSONData = data;		
 
 	//	Extract key dates from JSON data e.g. ['2009-01', '2009-02', ...]
 	this.keyDates = Object.keys( this.JSONData );
 	
 	//	Extract key headings from JSON data e.g. ['bbcfour', 'bbcnews24', ...]
-	this.keyHeadings = Object.keys( this.JSONData[this.keyDates[0]] );
+	this.keyHeadings = Object.keys( this.JSONData[ this.keyDates[ 0 ] ] );
 	
 	//	Table container element
 	this.tableContainer = element;
@@ -49,11 +50,20 @@ var BBC = function(element, data) {
 		'cbeebies' : 'Cbeebies'	
 	};
 
-	
+	/*
+	*	Shortcut method for creating HTML elements.
+	*/
 	this.create = function( tagName ) {
+
+		//	Create and return the HTML element
 		return document.createElement( tagName );
+
 	};
 
+	/*
+	*	Build and assembles table and
+	*	calls methods to build table elements e.g. thead.
+	*/  
 	this.buildTable = function() {
 
 		//	Create HTML 'table' element : <table>
@@ -67,12 +77,17 @@ var BBC = function(element, data) {
 		
 		//	Check table container element is not undefined	
 		if( this.tableContainer !== undefined ) {
+
 			//	Append HTML table element to container	
 			this.tableContainer.appendChild( table );
+
 		}
 
 	};
 
+	/*
+	*	Builds and returns table head <thead>
+	*/
 	this.buildTHead = function() {
 		
 		//	Create HTML thead element : <thead>
@@ -88,22 +103,22 @@ var BBC = function(element, data) {
 			i;
 		
 		//	Create text node and append to th element : <th>Date</th>
-		th.appendChild(document.createTextNode( 'Date' ));
+		th.appendChild( document.createTextNode( 'Date' ) );
 
 		//	Append th element to tr element : <tr><th>Date</th></td>
-		tr.appendChild(th);
+		tr.appendChild( th );
 
 		//	Loop through key headings to create headings
-		for (i = 0; i < this.keyHeadings.length; i++) {
+		for ( i = 0; i < this.keyHeadings.length; i++ ) {
 			
 			//	Create HTML th element
 			var th = this.create( 'th' ),
 				
 				//	Store heading in variable
-				heading = this.channels[this.keyHeadings[i]];
+				heading = this.channels[ this.keyHeadings[ i ] ];
 
 			//	Create text node and append to th element : <th>Heading</th>					
-			th.appendChild(document.createTextNode( heading ));
+			th.appendChild( document.createTextNode( heading ) );
 			
 			//	Append th element to tr elemtn : <tr><th>Heading</th></tr>
 			tr.appendChild( th );
@@ -118,12 +133,26 @@ var BBC = function(element, data) {
 
 	};
 
-	this.formatDate = function( dateString ) {	
-		var month = this.months[dateString.substr(5,6)];
-		var year = dateString.substr(0,4);	
+	/*
+	*	Creates and returns an appropriately
+	*	formatted date e.g. 'January 2009'
+	*/
+	this.formatDate = function( dateString ) {
+
+		//	Extract full month name from object	
+		var month = this.months[ dateString.substr( 5, 6 ) ];	
+
+		//	Extract year from date string
+		var year = dateString.substr( 0, 4 );
+
+		//	Return formatted date	
 		return month + ' ' + year;
+
 	};
 
+	/*
+	*	Builds the table body <tbody>
+	*/
 	this.buildTBody = function() {
 
 		//	Create HTML tbody element : <tbody>
@@ -139,10 +168,10 @@ var BBC = function(element, data) {
 			j;
 
 		//	Loop through key dates to build table rows
-		for (i = 0; i<this.keyDates.length; i++) {
+		for ( i = 0; i < this.keyDates.length; i++ ) {
 			
 			//	Current key e.g. 2009-01		
-			var keyDate = this.keyDates[i],
+			var keyDate = this.keyDates[ i ],
 
 				//	Formatted date string e.g. 'January 2009'
 				date = this.formatDate( keyDate ),
@@ -166,40 +195,41 @@ var BBC = function(element, data) {
 					self = this;
 
 				//	Set value of href attribute
-				a.setAttribute('href','#');
+				a.setAttribute( 'href', '#' );
 
 				//	Add data-keyDate attribute to support visualization
-				a.setAttribute('data-keydate', keyDate);
+				a.setAttribute( 'data-keydate', keyDate );
 
 				//	Create text node and append to HTML element a
 				a.appendChild( date );
 				
 				//	Add click event listener to link
-				a.addEventListener("click", self.visualize.bind(this), false);
+				a.addEventListener( 'click', self.visualize.bind( this ), false );
 			
 				//	Append link element to to td element
 				td.appendChild( a );
-			}
-			else
-			{
+
+			} else {
+
 				//	Append text node to td element
 				td.appendChild( date );
+
 			}
 
 			//	Append td element to tr element
 			tr.appendChild( td );
 
 			//	Loop through each key heading
-			for (j = 0; j < this.keyHeadings.length; j++ ) {
+			for ( j = 0; j < this.keyHeadings.length; j++ ) {
 
 				//	Create HTML element td
 				var td = this.create( 'td' ),
 
 					// Key heading e.g. 'bbcFour'
-					keyHeading = this.keyHeadings[j],
+					keyHeading = this.keyHeadings[ j ],
 					
 					//	Create text node for value
-					value = document.createTextNode( data[keyDate][keyHeading] );
+					value = document.createTextNode( data[ keyDate ] [ keyHeading ] );
 
 				//	Append value to HTML td element
 				td.appendChild( value );
@@ -219,16 +249,21 @@ var BBC = function(element, data) {
 
 	};
 
+	/*
+	*	Creates visualization table elements
+	*	and displays appropriate data based on
+	*	clicked element.
+	*/
 	this.visualize = function( event ) {
 		
 		//	Prevent default behaviour when link is clicked
 		event.preventDefault();
 
 		//	Empty/remove inner content of chart container
-		this.chartContainer.innerHTML = "";
+		this.chartContainer.innerHTML = '';
 
 		//	Get key date value from link's data attribute e.g. '2009-01'
-		var keyDate = event.target.getAttribute("data-keydate"),
+		var keyDate = event.target.getAttribute( 'data-keydate' ),
 
 			//	Create HTML table element : <table>
 			table = this.create( 'table' ),
@@ -249,7 +284,7 @@ var BBC = function(element, data) {
 			date = this.formatDate( keyDate ),
 
 			//	Get data/object for key date
-			data = this.JSONData[keyDate],
+			data = this.JSONData[ keyDate ],
 
 			//	Variable to hold total value
 			total = 0,
@@ -257,10 +292,19 @@ var BBC = function(element, data) {
 			//	Variable for use within for loop
 			channel;
 		
-		th.setAttribute('colspan','2');
-		th.appendChild(document.createTextNode( date ));
-		tr.appendChild(th);
-		thead.appendChild(tr);
+		//	Set column span of <th>
+		th.setAttribute( 'colspan', '2' );
+
+		//	Append date text node to table heading element <th>
+		th.appendChild( document.createTextNode( date ) );
+
+		//	Append table heading element to table row element
+		tr.appendChild( th );
+
+		//	Append table row to table head <thead> element 
+		thead.appendChild( tr );
+
+		//	Append table heading to table element
 		table.appendChild( thead );
 
 		//	Loop through object to calculate total of
@@ -268,7 +312,7 @@ var BBC = function(element, data) {
 		for ( channel in data ) {
 
 			//	Increase total by value
-			total += data[channel];
+			total += data[ channel ];
 
 		}
 
@@ -277,7 +321,7 @@ var BBC = function(element, data) {
 		for ( channel in data ) {
 
 			//	Calculate percentage value
-			var percentage = ( data[channel] / total ) * 100,
+			var percentage = ( data[ channel ] / total ) * 100,
 				
 				//	Create HTML tr element : <tr>
 				tr = this.create( 'tr' ),
@@ -292,19 +336,19 @@ var BBC = function(element, data) {
 				bar = this.create( 'div' ),
 
 				//	Get formatted channel name
-				formattedChannel = this.channels[channel];
+				formattedChannel = this.channels[ channel ];
 			
 			//	Set width of bar to visualize value
-			bar.style.width = data[channel] / 2 + 'px';
+			bar.style.width = data[ channel ] / 2 + 'px';
 
 			//	Add class name to bar element to attach styling
 			bar.className = 'visualize';
 
 			//	Create text node containing channel data and append to bar element
-			bar.appendChild(document.createTextNode( data[channel] + " (" + percentage.toFixed(2) + "%)"));
+			bar.appendChild( document.createTextNode( data[ channel ] + " (" + percentage.toFixed( 2 ) + "%)" ) );
 
 			//	Create text node containing formatted channel name and append to td element
-			channel_td.appendChild(document.createTextNode( formattedChannel ));
+			channel_td.appendChild( document.createTextNode( formattedChannel ) );
 
 			//	Append channel td element to tr element
 			tr.appendChild( channel_td );
@@ -325,10 +369,7 @@ var BBC = function(element, data) {
 
 		//	Append constructed table to chart container element
 		this.chartContainer.appendChild( table );
-	};
 
-	this.sortTable = function( cellIndex ) {
-		console.log( cellIndex );
 	};
 
 };
