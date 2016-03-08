@@ -20,21 +20,19 @@
 		<h2>Visualization</h2>
 		<p>Click a date above to show visualization.</p>
 		<div id="visualization"></div>
-
-		<!-- JQuery -->
-		<script src="jquery-2.1.1.js"></script>
 		
 		<!-- JS -->
+		<script src="jquery-2.1.1.js"></script>
 		<script src="BBC.js"></script>
 		<script type="text/javascript">
 		//	AJAX request for JSON data
-		$.getJSON('data.json', function (data) {
+		$.getJSON( 'data.json', function (data) {
     		
     		//	Container element for table
-    		var table = document.getElementById('table');
+    		var table = document.getElementById( 'table' );
     		
     		//	Initialize new BBBC object
-    		var myBBC = new BBC(table, data);
+    		var myBBC = new BBC( table, data );
 
     		//	Set object property to display visualizations
     		myBBC.chartContainer = document.getElementById( 'visualization' );
