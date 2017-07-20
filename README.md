@@ -1,10 +1,10 @@
-#BBC Interview Exercise
+# BBC Interview Exercise
 
 In August 2016 I joined the BBC as a 'Trainee Web Developer' and as part of the interview I was asked to complete a programming exercise. This repository includes the files that I wrote to meet the following brief:
 
 This test is designed to demonstrate your front-end development skills. You should be prepared to spend at least four hours on it.
 
-##We are looking for you to demonstrate:
+## We are looking for you to demonstrate:
 
 * The ability to write clean, semantic HTML markup
 * An understanding of JavaScript
@@ -18,7 +18,7 @@ $.getJSON('data.json', function (data) {
 });
 ```
 
-##Within approximately three to four hours we would expect:
+## Within approximately three to four hours we would expect:
 
 * JavaScript code that takes the data and renders out a HTML table into the body of the HTML document.
 * The date to be formatted as "Month YYYY".
@@ -33,7 +33,7 @@ Here's an example of what we'd like you to generate:
 | January 2009 | 940     | 1040    | 441       | 1075        | 898  | 1343     |
 ```
 
-##Additional information:
+## Additional information:
 
 * You MUST use the data from the JSON file to build the table.
 * You MUST not edit the structure of the data in the JSON file, this will be considered cheating.
